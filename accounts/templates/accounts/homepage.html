@@ -1,0 +1,40 @@
+{% extends 'accounts/landing_base.html' %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'accounts/style.css' %}" />
+
+{% block title %} Welcome {% endblock %}
+{% block body %}
+<script>
+    var i = 0;
+    $(document).ready(function() {
+        document.getElementById('image').src = "/static/images/image3.jpg";
+        setTimer();
+    });
+
+    function setTimer() {
+        setInterval('changeImage()', 7000);
+    }
+
+    function changeImage() {
+        i++;
+        if (i == 5) i = 1;
+
+        $(document.getElementById('image')).fadeOut(500, 'linear', function() {
+            document.getElementById('image').src = "static/images/image" + i + ".jpg";
+            $(document.getElementById('image')).fadeIn(500, 'linear');
+        });
+    }
+</script>
+
+<div class="center">
+    <h1>HealthNet</h1>
+    <p>
+        <div id="slideshow" style="width:562px; margin:0 auto;">
+                    <img src="" id="image">
+        </div>
+    <br>
+    <a class="btn btn-primary btn-lg" href="{% url 'accounts:register' %}">Register</a>
+</div>
+
+{% endblock %}

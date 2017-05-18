@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/theme.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/style.css' %}"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" type="image/png" href="/static/favicon.ico"/>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+
+            <!-- Header -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+                    <span class = "glyphicon glyphicon-menu-hamburger"></span>
+                </button>
+                <a class="navbar-brand" href="#" style="font-family: 'Open Sans', sans-serif;font-size: 14pt">HealthNet</a>
+            </div>
+
+            <!-- NavBar Items-->
+            <div class="collapse navbar-collapse" id="topNavBar">
+                <ul class="nav navbar-nav">
+                    <li class="{% if request.session.dash%}active{% endif %}">
+                        {% if request.user.patient %}
+                            <a href="{% url 'patient:index' %}">
+                        {% elif request.user.doctor %}
+                            <a href="{% url 'doctor:index' %}">
+                        {% elif request.user.nurse %}
+                            <a href="{% url 'nurse:index' %}">
+                        {% elif request.user.h_admin %}
+                            <a href="{% url 'h_admin:index' %}">
+                        {% endif %}
+                                <span class="glyphicon glyphicon-home" aria-hidden="true"></span>&nbsp; Dashboard
+                            </a>
+                    </li>
+                    <!-- EMR -->
+                    <li class="{% if request.session.emr %}active{% endif %}">
+                        {% if request.user.patient %}
+                            <a href="{% url 'patient:emr' %}">
+                                <span class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>&nbsp; EMR
+                            </a>
+                        {% elif request.user.doctor %}
+                        <a href="{% url 'doctor:emr' %}">
+                                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp; Patient List
+                            </a>
+                        {% elif request.user.nurse %}
+                            <a href="{% url 'nurse:emr' %}">
+                                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp; Patient List
+                            </a>
+                        {% else %}
+                            <a href="{% url 'h_admin:emr' %}">
+                                <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>&nbsp; Patient List
+                            </a>
+                        {% endif %}
+                    </li>
+
+                    <!-- Messages -->
+                    {% if not request.user.patient %}
+                        <li class="{% if request.session.messages %}active{% endif %}">
+                            <a href="{% url 'message:inbox' %}">
+                                <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp; Messages
+                                <span class="badge">{{ request.user.get_message_count }} </span>
+                            </a>
+                        </li>
+                    {% endif %}
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- Notifications -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            <span class="glyphicon glyphicon-bell" aria-hidden="true"></span>&nbsp; Notifications <span class="badge">{{ request.user.notification_set.count }}</span> <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for notification in request.user.notification_set.all %}
+                                {% if not notification.is_seen %}
+                                    {% if notification.appointmentnotification %}
+                                        <li> <a href="{% url 'appointment:eventnotificationhandler' pk=notification.pk %}" >{{ notification.name }}</a></li>
+                                    {% elif notification.prescriptionnotification  %}
+                                        <li> <a href="{% url 'prescription:notificationhandler' pk=notification.pk %}" >{{ notification.name }}</a></li>
+                                    {% elif notification.removedprescriptionnotification  %}
+                                        <li> <a href="{% url 'prescription:notificationhandler' pk=notification.pk %}" >{{ notification.name }}</a></li>
+                                    {% elif notification.testresultnotification  %}
+                                        <li> <a href="{% url 'test_result:notificationhandler' pk=notification.pk %}" >{{ notification.name }}</a></li>
+                                    {% elif notification.approvetestresultnotification  %}
+                                        <li> <a href="{% url 'test_result:approvenotificationhandler' pk=notification.pk %}" >{{ notification.name }}</a></li>
+                                    {% elif notification.receivetransfernotification  %}
+                                        <li> <a href="{% url 'accounts:transfernotificationhandler' pk=notification.pk %}" >{{ notification.name }}</a></li>
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </li>
+                    <!-- Profile -->
+                    <li class="{% if request.session.profile %}active{% endif %}">
+                        {% if request.user.patient %}
+                            <a href="{% url 'accounts:patientprofile' request.user.pk%}">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Profile
+                            </a>
+                        {% elif request.user.doctor %}
+                            <a href="{% url 'doctor:profile' request.user.pk %}">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Profile
+                            </a>
+                        {% elif request.user.nurse %}
+                            <a href="{% url 'nurse:profile' request.user.pk %}">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Profile
+                            </a>
+                        {% elif request.user.h_admin %}
+                            <a href="{% url 'h_admin:profile' request.user.pk %}">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Profile
+                            </a>
+                        {% endif %}
+                    </li>
+                    <li class="">
+                        <a href="{% url 'accounts:help'%}">
+                            <span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>&nbsp; Help
+                        </a>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'accounts:logout'%}">
+                            <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp; Log Out
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% block body %}
+{% endblock %}
+</body>
+</html>
+

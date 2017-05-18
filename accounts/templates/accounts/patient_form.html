@@ -1,0 +1,44 @@
+{% extends 'accounts/base.html' %}
+{% block title %}Update Profile{% endblock %}
+{% block body %}
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-sm-12 col-md-7  center-block " style="float:none;">
+                <div class="panel panel panel-default">
+                    <div class="panel-body">
+                        <center><h3>Update Profile Information (continue)</h3></center><br>
+                        {% if error_message %}
+                            <div class="col-sm-offset-4 col-sm-8">
+                                <p style="color:red"><strong>{{ error_message }}</strong></p>
+                            </div>
+                        {% endif %}
+                        <form class="form-horizontal" role="form" action="" method="post">
+                            {% csrf_token %}
+                            {% include 'accounts/form_template.html' %}
+                            <div class="form-group">
+
+                                <div class="col-md-6" style="text-align:left">
+                                    <a href="{% url 'patient:update1' request.user.pk %}">
+                                        <button type="button" class="btn btn-primary">Go Back</button>
+                                    </a>
+                                </div>
+                                <div class="col-md-6" style="text-align:right">
+                                <a href="{% url 'accounts:patientprofile' request.user.pk%}">
+                                    <button type="button" class="btn btn-danger">Cancel</button>
+                                </a>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

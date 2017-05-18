@@ -1,0 +1,75 @@
+
+body {
+    background-color: #9ed9ff;
+    padding-top: 70px;
+}
+.center {
+    padding: 20px 0;
+    text-align: center;
+}
+
+@media print {
+    #sortButton {
+        display: none;
+    }
+    #chronButton {
+        display: none;
+    }
+    #print {
+        display: none;
+    }
+    #updateButton{
+        display: none;
+    }
+    #addPrescButton{
+        display: none;
+    }
+    #addResultButton{
+        display: none;
+    }
+    a[href]:after {
+        content: none !important;
+    }
+}
+
+a {
+    text-decoration: none;
+}
+
+.btn-link{
+  border:none;
+  outline:none;
+  background:none;
+  cursor:pointer;
+  color:#000;
+  padding:0;
+  font-family:inherit;
+  font-size:inherit;
+}
+
+.btn-unavailable{
+  border:none;
+  outline:none;
+  background:black;
+  cursor:pointer;
+  color:#000;
+  padding:0;
+  font-family:inherit;
+  font-size:inherit;
+}
+
+.vcenter{
+    display: inline-block;
+    vertical-align: middle;
+    float: none;
+}
+
+#buttonsdiv{
+    width: 100%;
+    height: auto;
+}
+
+#buttonsdiv2{
+    width: 100%;
+    height: auto;
+}

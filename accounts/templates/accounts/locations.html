@@ -1,0 +1,20 @@
+{% extends 'accounts/landing_base.html' %}
+{% block title %} HealthNet Locations {% endblock %}
+{% block body %}
+
+<body>
+    <div class="container-fluid" align="center">
+        <h1>Our Locations</h1>
+        <br>
+        {% for hospital in hospital_list %}
+            <p>
+            <strong>{{ hospital.name }}</strong><br>
+            {{ hospital.address }}<br>
+            {{ hospital.formatted_phone }}
+            </p>
+        {% endfor %}
+
+    </div>
+</body>
+
+{% endblock %}

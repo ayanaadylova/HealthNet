@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    {% load staticfiles %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/theme.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/style.css' %}"/>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="shortcut icon" type="image/png" href="/static/favicon.ico"/>
+    {% block head %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+
+            <!-- Header -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+                    <span class = "glyphicon glyphicon-menu-hamburger"></span>
+                </button>
+                <a class="navbar-brand" style="font-family: 'Open Sans', sans-serif;font-size: 14pt">HealthNet</a>
+            </div>
+
+            <!-- NavBar Items-->
+            <div class="collapse navbar-collapse" id="topNavBar">
+                <ul class="nav navbar-nav">
+                    <li {% if request.get_full_path == '/' %}class="active"{% endif %}>
+                        <a href="{% url 'homepage_redirect' %}">Home</a>
+                    </li>
+                    <li {% if request.session.locations %}class="active"{% endif %}>
+                        <a href="{% url 'accounts:locations' %}">Our Locations</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="{% url 'accounts:register'%}">Register</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'accounts:login'%}">
+                            <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp; Log In
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+{% block body %}
+{% endblock %}
+</body>
+</html>

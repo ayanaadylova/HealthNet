@@ -1,0 +1,329 @@
+{% extends 'accounts/base.html' %}
+{% block title %} Help {% endblock %}
+{% block body %}
+
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-body">
+            <h1>Need Help?</h1>
+            {% if request.user.patient %}
+                <h3>How to Create an Appointment:</h3>
+                    <ul>
+                        <li>Navigate to your Dashboard by clicking the Dashboard button in the navbar on the top of the page</li>
+                        <li>If you have yet to enter in important Medical Info, there will be a button requesting for you to fill out this info at the bottom of your calendar before making an appointment.
+                            Please do so as you will be unable to create an Appointment before you do.</li>
+                        <li>If you have already entered in the relevant medical info, you will see a button on the bottom of your calendar labeled 'Make Appointment', Click on this button.</li>
+                        <li>After clicking on the button, enter in a name for the Appointment, and the day you wish to have the appointment on.</li>
+                        <li>After Entering in the date and progressing to the next part of the process, enter in the desired start time of your appointment. (Note: you will only
+                            be able to create a 30 minute long appointment, a longer appointment must be scheduled by a doctor or nurse)</li>
+                        <li>Click Submit to create the appointment, you can view the appointment on you calendar, and click on it to update details, or delete it. Your doctor will automatically be notified
+                            of the appointment.</li>
+                    </ul>
+                <h3>How to View My Profile:</h3>
+                    <ul>
+                        <li>From the Navigation bar on the top of your screen, click on the 'Profile' button, this will bring you to a view of your profile.</li>
+                    </ul>
+                <h3>How to Change My Profile Info:</h3>
+                    <ul>
+                        <li>From the View of your Profile, click on the 'Update Profile Info' button on the bottom right of the panel.</li>
+                    </ul>
+                <h3>How to Change My Password:</h3>
+                    <ul>
+                        <li>From the View of your Profile, click the 'Change Password' button on th bottom right of the panel.</li>
+                        <li>Enter in the new password you wish to have to log in to your account.</li>
+                        <li>Re-Enter the new password in the second field.</li>
+                        <li>Click submit to change your password, you will then be able to Log in with your new password. (Note: Your previous password will no longer work to log you in,
+                            so it is recommended that you pick a new password that you will remember.)</li></lu>
+                    </ul>
+                <h3>How to View My Medical Info:</h3>
+                    <ul>
+                        <li>From you Navigation Bar at the top of your screen, click the 'EMR' buttom, EMR stands for 'Electronic Medical Record'</li>
+                    </ul>
+                <h3>How to Print My Medical Info:</h3>
+                    <ul>
+                        <li>From the view of your Electronic Medical Record, click on the button on the top right of the first panel on the screen, the button has a small
+                            picture of a printer on it.</li>
+                        <li>Select the printer you wish to print to and click the 'Print' button, then check your printer.</li>
+                    </ul>
+            {% elif request.user.doctor %}
+                <h3>How to create an Appointment for a Patient</h3>
+                    <ul>
+                        <li>Navigate to your Dashboard by clicking on the Dashboard button in the Navigation bar at the top of your screen.</li>
+                        <li>Click on the button labeled 'Make Appointment' below your calendar.</li>
+                        <li>Enter in a name for the appointment, select the patient and select a date. Then click Submit</li>
+                        <li>Select a beginning and an end time for the appointment from the drop down menu.</li>
+                        <li>Click Submit and the new appointment should appear on your calendar, click on it to edit details of the appointment or delete it.</li>
+                    </ul>
+                <h3>How to set aside Personal Time on your schedule</h3>
+                    <ul>
+                        <li>Navigate to your Dashboard by clicking on the Dashboard button in the Navigation menu at the top of your screen.</li>
+                        <li>Click on the button labeled 'Make Appointment'</li>
+                        <li>Enter in a name for the time (Ex: 'Racquetball')</li>
+                        <li>Leave the Patient field Blank.</li>
+                        <li>Select a date form the drop down, then hit Submit.</li>
+                        <li>The new Personal time slot will appear on your calendar, and Patients and Nurses will be unable to create new Appointments for you during this time slot.</li>
+                    </ul>
+                <h3>How to add a Prescription to a Patient:</h3>
+                    <ul>
+                        <li>Navigate to your Patient list from the 'Patient List' button on the navigation bar at the top of your screen.</li>
+                        <li>Click on the EMR for the Patient for whom the Prescription will be made out to.</li>
+                        <li>Click on the 'Add Prescription' button on the second panel of the Patient's Electronic Medical Record.</li>
+                        <li>Enter in the name of the drug being Prescribed in the first field.</li>
+                        <li>Enter in Information about the Prescription in the second field.</li>
+                        <li>Enter in a start and end date for the Prescription and refills.</li>
+                        <li>Enter in the dosage number, and the dosage units in the bottom 2 fields.</li>
+                        <li>Click submit to create the Prescription which should now appear on the Patient's EMR.</li>
+                    </ul>
+                <h3>How to add a Test Result to a Patient:</h3>
+                    <ul>
+                        <li>Navigate to your Patient list from the 'Patient List' button on the navigation bar at the top of your screen.</li>
+                        <li>Click on the EMR for the Patient for whom the Test Result is for.</li>
+                        <li>Click on the 'Add Test Result' button on the third panel on the EMR.</li>
+                        <li>Enter a name for the Test Result and a date.</li>
+                        <li>Enter in the relevant text information for the Test result.</li>
+                        <li>Click on the Choose file button to add a picture or other file to the Test Result.</li>
+                        <li>Select whether the patient will see the results of this test in the checkbox.</li>
+                        <li>Click Submit and the Test result will be added to the Patient's EMR.</li>
+                    </ul>
+                <h3>How to update a Patient's Medical Info:</h3>
+                    <ul>
+                        <li>Navigate to your Patient list from the 'Patient List' button on the navigation bar at the top of your screen.</li>
+                        <li>Click on the EMR for the Patient for whom you wish to change the medical info.</li>
+                        <li>Click on the 'Update Medical Info' button on the first panel of the EMR.</li>
+                        <li>Enter in relevant information into the fields and click submit.</li>
+                        <li>The new information will now be displayed on the Patient's EMR.</li>
+                    </ul>
+                <h3>How to Send a Message to a Staff Member:</h3>
+                    <ul>
+                        <li>Click on the Messages button from the navigation menu at the top of your screen.</li>
+                        <li>Click Send message to send a new message.</li>
+                        <li>Select a Recipient from the Users menu, use the Search bar if there are a lot of Entries.</li>
+                        <li>After selecting a User, select the priority of the message and type in the subject.</li>
+                        <li>Type in the contents of the message in the Message field.</li>
+                        <li>Click submit after you finish typing the message.</li>
+                    </ul>
+                <h3>How to View Messages Sent to You:</h3>
+                    <ul>
+                        <li>Click on the Messages button from the navigation menu at the top of your screen.</li>
+                        <li>Click on the Inbox tab below the 'Send Message' button.</li>
+                        <li>Click on the message you would like to view, they are listed by their priority set by the sender.</li>
+                    </ul>
+                <h3>How to Admit a Patient:</h3>
+                    <ul>
+                        <li>Navigate to the Dashboard using the Navigation Bar at the top of the screen.</li>
+                        <li>Just below the Navigation Bar there is a group of buttons, click on the button that says 'Admit Patient'.</li>
+                        <li>Select the Patient you wish to admit.</li>
+                        <li>Select the Hospital from the Hospitals you work at that you wish to admit the Patient to.</li>
+                        <li>Select a reason from the drop down menu and any relevant details into the details field.</li>
+                        <li>Click submit and the Patient will be admitted into the hospital within the system.</li>
+                    </ul>
+                <h3>How to Discharge a Patient:</h3>
+                    <ul>
+                        <li>Navigate to the Dashboard using the Navigation Bar at the top of the screen.</li>
+                        <li>Just below the navigation bar there is a group of buttons, click on the button labeled 'Discharge a Patient'.</li>
+                        <li>Select the Patient you wish to discharge.</li>
+                        <li>Enter in a reason for discharging the patient.</li>
+                        <li>Click submit to discharge the patient from the system.</li>
+                    </ul>
+                <h3>How to Transfer a Patient;</h3>
+                    <ul>
+                        <li>Navigate to the Dashboard using the Navigation Bar at the top of the screen.</li>
+                        <li>Just below the navigation bar there is a group of buttons, click on the button labeled 'Discharge a Patient'.</li>
+                        <li>Select the patient you wish to transfer.</li>
+                        <li>Select the hospital you wish to transfer the patient to.</li>
+                        <li>Select the new doctor for the patient.</li>
+                        <li>click submit and the patient will be marked as in transit to the new hospital until the new doctor accepts the patient on the other side.</li>
+                    </ul>
+                <h3>How to View my Profile Info:</h3>
+                    <ul>
+                        <li>From the Navigation bar on the top of your screen, click on the 'Profile' button, this will bring you to a view of your profile.</li>
+                    </ul>
+                <h3>How to Change my Profile Info:</h3>
+                    <ul>
+                        <li>From the View of your Profile, click on the 'Update Profile Info' button on the bottom right of the panel.</li>
+                    </ul>
+                <h3>How to Change my Password:</h3>
+                    <ul>
+                        <li>From the View of you Profile, click on the 'Change Password' button on the botton right of the panel.</li>
+                        <li>Enter in the new password in the first field, and re-enter the new password in the second.</li>
+                        <li>Click submit and your password will be changed.</li>
+                    </ul>
+            {% elif request.user.nurse %}
+                <h3>How to create an Appointment for a Patient</h3>
+                    <ul>
+                        <li>Navigate to your Dashboard by clicking on the Dashboard button in the Navigation bar at the top of your screen.</li>
+                        <li>Click on the button labeled 'Make Appointment' below your calendar.</li>
+                        <li>Select the Doctor from the drop down who you will be making an appointment for.</li>
+                        <li>Enter in a name for the appointment, select the patient and select a date. Then click Submit</li>
+                        <li>Select a beginning and an end time for the appointment from the drop down menu.</li>
+                        <li>Click Submit and the new appointment should appear on your calendar, click on it to edit details of the appointment or delete it.</li>
+                    </ul>
+                <h3>How to add a Test Result to a Patient:</h3>
+                    <ul>
+                        <li>Navigate to your Patient list from the 'Patient List' button on the navigation bar at the top of your screen.</li>
+                        <li>Click on the EMR for the Patient for whom the Test Result is for.</li>
+                        <li>Click on the 'Add Test Result' button on the third panel on the EMR.</li>
+                        <li>Enter a name for the Test Result and a date.</li>
+                        <li>Enter in the relevant text information for the Test result.</li>
+                        <li>Click on the Choose file button to add a picture or other file to the Test Result.</li>
+                        <li>Select whether the patient will see the results of this test in the checkbox.</li>
+                        <li>Click Submit and the Test result will be added to the Patient's EMR.</li>
+                    </ul>
+                <h3>How to update a Patient's Medical Info:</h3>
+                    <ul>
+                        <li>Navigate to your Patient list from the 'Patient List' button on the navigation bar at the top of your screen.</li>
+                        <li>Click on the EMR for the Patient for whom you wish to change the medical info.</li>
+                        <li>Click on the 'Update Medical Info' button on the first panel of the EMR.</li>
+                        <li>Enter in relevant information into the fields and click submit.</li>
+                        <li>The new information will now be displayed on the Patient's EMR.</li>
+                    </ul>
+                <h3>How to Send a Message to a Staff Member:</h3>
+                    <ul>
+                        <li>Click on the Messages button from the navigation menu at the top of your screen.</li>
+                        <li>Click Send message to send a new message.</li>
+                        <li>Select a Recipient from the Users menu, use the Search bar if there are a lot of Entries.</li>
+                        <li>After selecting a User, select the priority of the message and type in the subject.</li>
+                        <li>Type in the contents of the message in the Message field.</li>
+                        <li>Click submit after you finish typing the message.</li>
+                    </ul>
+                <h3>How to View Messages Sent to You:</h3>
+                    <ul>
+                        <li>Click on the Messages button from the navigation menu at the top of your screen.</li>
+                        <li>Click on the Inbox tab below the 'Send Message' button.</li>
+                        <li>Click on the message you would like to view, they are listed by their priority set by the sender.</li>
+                    </ul>
+                <h3>How to Admit a Patient:</h3>
+                    <ul>
+                        <li>Navigate to the Dashboard using the Navigation Bar at the top of the screen.</li>
+                        <li>Just below the Navigation Bar there is a group of buttons, click on the button that says 'Admit Patient'.</li>
+                        <li>Select the Patient you wish to admit.</li>
+                        <li>Select the Hospital from the Hospitals you work at that you wish to admit the Patient to.</li>
+                        <li>Select a reason from the drop down menu and any relevant details into the details field.</li>
+                        <li>Click submit and the Patient will be admitted into the hospital within the system.</li>
+                    </ul>
+                <h3>How to View my Profile Info:</h3>
+                    <ul>
+                        <li>From the Navigation bar on the top of your screen, click on the 'Profile' button, this will bring you to a view of your profile.</li>
+                    </ul>
+                <h3>How to Change my Profile Info:</h3>
+                    <ul>
+                        <li>From the View of your Profile, click on the 'Update Profile Info' button on the bottom right of the panel.</li>
+                    </ul>
+                <h3>How to Change my Password:</h3>
+                    <ul>
+                        <li>From the View of you Profile, click on the 'Change Password' button on the botton right of the panel.</li>
+                        <li>Enter in the new password in the first field, and re-enter the new password in the second.</li>
+                        <li>Click submit and your password will be changed.</li>
+                    </ul>
+            {% else %}
+                <h3>How to create an Appointment for a Patient</h3>
+                    <ul>
+                        <li>Navigate to your Dashboard by clicking on the Dashboard button in the Navigation bar at the top of your screen.</li>
+                        <li>Click on the button labeled 'Make Appointment' below your calendar.</li>
+                        <li>Select the Doctor from the drop down who you will be making an appointment for.</li>
+                        <li>Enter in a name for the appointment, select the patient and select a date. Then click Submit</li>
+                        <li>Select a beginning and an end time for the appointment from the drop down menu.</li>
+                        <li>Click Submit and the new appointment should appear on your calendar, click on it to edit details of the appointment or delete it.</li>
+                    </ul>
+                <h3>How to add a Prescription to a Patient:</h3>
+                    <ul>
+                        <li>Navigate to your Patient list from the 'Patient List' button on the navigation bar at the top of your screen.</li>
+                        <li>Click on the EMR for the Patient for whom the Prescription will be made out to.</li>
+                        <li>Click on the 'Add Prescription' button on the second panel of the Patient's Electronic Medical Record.</li>
+                        <li>Enter in the name of the drug being Prescribed in the first field.</li>
+                        <li>Enter in Information about the Prescription in the second field.</li>
+                        <li>Enter in a start and end date for the Prescription and refills.</li>
+                        <li>Enter in the dosage number, and the dosage units in the bottom 2 fields.</li>
+                        <li>Click submit to create the Prescription which should now appear on the Patient's EMR.</li>
+                    </ul>
+                <h3>How to add a Test Result to a Patient:</h3>
+                    <ul>
+                        <li>Navigate to your Patient list from the 'Patient List' button on the navigation bar at the top of your screen.</li>
+                        <li>Click on the EMR for the Patient for whom the Test Result is for.</li>
+                        <li>Click on the 'Add Test Result' button on the third panel on the EMR.</li>
+                        <li>Enter a name for the Test Result and a date.</li>
+                        <li>Enter in the relevant text information for the Test result.</li>
+                        <li>Click on the Choose file button to add a picture or other file to the Test Result.</li>
+                        <li>Select whether the patient will see the results of this test in the checkbox.</li>
+                        <li>Click Submit and the Test result will be added to the Patient's EMR.</li>
+                    </ul>
+                <h3>How to update a Patient's Medical Info:</h3>
+                    <ul>
+                        <li>Navigate to your Patient list from the 'Patient List' button on the navigation bar at the top of your screen.</li>
+                        <li>Click on the EMR for the Patient for whom you wish to change the medical info.</li>
+                        <li>Click on the 'Update Medical Info' button on the first panel of the EMR.</li>
+                        <li>Enter in relevant information into the fields and click submit.</li>
+                        <li>The new information will now be displayed on the Patient's EMR.</li>
+                    </ul>
+                <h3>How to Send a Message to a Staff Member:</h3>
+                    <ul>
+                        <li>Click on the Messages button from the navigation menu at the top of your screen.</li>
+                        <li>Click Send message to send a new message.</li>
+                        <li>Select a Recipient from the Users menu, use the Search bar if there are a lot of Entries.</li>
+                        <li>After selecting a User, select the priority of the message and type in the subject.</li>
+                        <li>Type in the contents of the message in the Message field.</li>
+                        <li>Click submit after you finish typing the message.</li>
+                    </ul>
+                <h3>How to View Messages Sent to You:</h3>
+                    <ul>
+                        <li>Click on the Messages button from the navigation menu at the top of your screen.</li>
+                        <li>Click on the Inbox tab below the 'Send Message' button.</li>
+                        <li>Click on the message you would like to view, they are listed by their priority set by the sender.</li>
+                    </ul>
+                <h3>How to Admit a Patient:</h3>
+                    <ul>
+                        <li>Navigate to the Dashboard using the Navigation Bar at the top of the screen.</li>
+                        <li>Just below the Navigation Bar there is a group of buttons, click on the button that says 'Admit Patient'.</li>
+                        <li>Select the Patient you wish to admit.</li>
+                        <li>Select the Hospital from the Hospitals you work at that you wish to admit the Patient to.</li>
+                        <li>Select a reason from the drop down menu and any relevant details into the details field.</li>
+                        <li>Click submit and the Patient will be admitted into the hospital within the system.</li>
+                    </ul>
+                <h3>How to Discharge a Patient:</h3>
+                    <ul>
+                        <li>Navigate to the Dashboard using the Navigation Bar at the top of the screen.</li>
+                        <li>Just below the navigation bar there is a group of buttons, click on the button labeled 'Discharge a Patient'.</li>
+                        <li>Select the Patient you wish to discharge.</li>
+                        <li>Enter in a reason for discharging the patient.</li>
+                        <li>Click submit to discharge the patient from the system.</li>
+                    </ul>
+                <h3>How to Transfer a Patient;</h3>
+                    <ul>
+                        <li>Navigate to the Dashboard using the Navigation Bar at the top of the screen.</li>
+                        <li>Just below the navigation bar there is a group of buttons, click on the button labeled 'Discharge a Patient'.</li>
+                        <li>Select the patient you wish to transfer.</li>
+                        <li>Select the hospital you wish to transfer the patient to.</li>
+                        <li>Select the new doctor for the patient.</li>
+                        <li>click submit and the patient will be marked as in transit to the new hospital until the new doctor accepts the patient on the other side.</li>
+                    </ul>
+                <h3>How to View my Profile Info:</h3>
+                    <ul>
+                        <li>From the Navigation bar on the top of your screen, click on the 'Profile' button, this will bring you to a view of your profile.</li>
+                    </ul>
+                <h3>How to Change my Profile Info:</h3>
+                    <ul>
+                        <li>From the View of your Profile, click on the 'Update Profile Info' button on the bottom right of the panel.</li>
+                    </ul>
+                <h3>How to Change my Password:</h3>
+                    <ul>
+                        <li>From the View of you Profile, click on the 'Change Password' button on the botton right of the panel.</li>
+                        <li>Enter in the new password in the first field, and re-enter the new password in the second.</li>
+                        <li>Click submit and your password will be changed.</li>
+                    </ul>
+                <h3>How to Upload a CSV file:</h3>
+                    <ul>
+                        <li>From the Navigation bar click on your Dashboard.</li>
+                        <li>From the list of buttons directly below the navigation bar, click on the 'Upload CSV' button.</li>
+                        <li>Use the choose file to browse through computer and upload the CSV file.</li>
+                        <li>click submit to ingest the CSV file into the system.</li>
+                    </ul>
+                <h3>How to view the System Logs and Statistics.</h3>
+                    <ul>
+                        <li>From the navigation bar click on you Dashboard.</li>
+                        <li>From the list of buttons directly below the navigatoin bar, click on the 'View Log/Statistics' button.</li>
+                    </ul>
+            {% endif %}
+            {% endblock %}
+        </div>
+    </div>
+</div>

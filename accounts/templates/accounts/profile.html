@@ -1,0 +1,60 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block body %}
+
+{% if error_message %}
+    <p style="color:red"><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<!-- Personal Information -->
+<div class="container">
+    <div class="center"><h3>{{ patient.user.get_full_name }}'s Profile</h3></div>
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <h4 class="panel-title">Personal Information</h4>
+        </div>
+
+        <div class="panel-body">
+            <ul>
+                <strong>First Name: </strong>{{ patient.user.first_name }} <br>
+                <strong>Last Name: </strong>{{ patient.user.last_name }} <br>
+                <strong>Date of Birth: </strong>{{ patient.date_of_birth }} <br>
+                <strong>Email: </strong>{{ patient.user.email }} <br>
+                <strong>Address: </strong>{{ patient.address }} <br>
+                <strong>Phone Number: </strong>{{ patient.phone_number }} <br>
+                <strong>Insurance Number: </strong>{{ patient.insurance_number }} <br>
+                <strong>Hospital: </strong>{{ patient.hospital }} <br>
+                <strong>Doctor/PCP: </strong>{{ patient.doctor }} <br>
+                <strong>Emergency Contact Information: </strong> <br>
+                <ul>
+                First Name: {{ patient.emergency_first_name }} <br>
+                Last Name: {{ patient.emergency_last_name }} <br>
+                Phone Number: {{ patient.emergency_phone_number }} <br>
+                Address: {{ patient.emergency_address }} <br>
+                Relationship: {{patient.emergency_relationship }} <br>
+                </ul>
+            </ul>
+        </div>
+        {% if request.user.patient %}
+            <div align="right">
+                <!-- Update Password -->
+                <a href="{% url 'accounts:updatepassword'%}">
+                    <button type="submit" class="btn btn-primary">Update Password</button>
+                </a>
+                <!-- Update Profile Information -->
+                <a href="{% url 'patient:update1' request.user.pk %}">
+                    <button type="submit" class="btn btn-success">Update Profile</button>
+                </a>
+            </div> <br>
+
+
+        {% endif %}
+    </div>
+
+</div>
+
+
+{% endblock %}
