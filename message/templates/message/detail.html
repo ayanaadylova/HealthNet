@@ -1,0 +1,51 @@
+{% extends 'accounts/base.html' %}
+{% block title %}{{ message.subject }}{% endblock %}
+{% block body %}
+    {% if error_message %}
+        <p style="color:red"><strong>{{ error_message }}</strong></p>
+    {% endif %}
+    <br>
+    <div class="container" >
+        <table class="table table-bordered" style="background-color:white">
+            <tbody>
+                <tr>
+                    <th>Subject:</th>
+                    <td>{{ message.subject }}</td>
+                </tr>
+                <tr>
+                    <th>From:</th>
+                    <td>{{ message.sender }}</td>
+                </tr>
+                <tr>
+                    <th>To:</th>
+                    <td>{{ message.receiver }}</td>
+                </tr>
+                <tr>
+                    <th>Time:</th>
+                    <td>{{ message.time }}</td>
+                </tr>
+                <tr>
+                    <th>Priority:</th>
+                    <td>{{ message.priority }}</td>
+                </tr>
+                <tr>
+                    <th>Message:</th>
+                    <td>{{ message.message }}</td>
+                </tr>
+            </tbody>
+        </table>
+
+
+
+
+    {% if message.receiver == request.user %}
+        <a href="{% url 'message:inbox' %}">
+            <button type="submit" class="btn btn-primary">Back</button>
+        </a>
+    {% else %}
+        <a href="{% url 'message:outbox' %}">
+            <button type="submit" class="btn btn-primary">Back</button>
+        </a>
+    {% endif %}
+    </div>
+{% endblock %}

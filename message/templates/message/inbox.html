@@ -1,0 +1,55 @@
+{% extends 'accounts/base.html' %}
+{% block title %}Inbox{% endblock %}
+{% block body %}
+<div class="container">
+<a href="{% url 'message:newmessage' %}">
+    <button type="button" class="btn btn-primary">Send a Message</button>
+</a>
+<br><br>
+<ul class="nav nav-pills">
+  <li role="presentation" class="active"><a href="{% url 'message:inbox' %}"><strong>Inbox</strong></a></li>
+  <li role="presentation"><a href="{% url 'message:outbox' %}"><strong>Outbox</strong></a></li>
+  <li role="presentation"><a href="{% url 'message:deleted' %}"><strong>Deleted</strong></a></li>
+</ul>
+{% if message_list.count == 0 %}
+    <center><h3>You have no messages in your Inbox</h3></center>
+{% else %}
+<div class="panel panel-primary">
+
+    <div class="panel-heading">
+        <h4 class="panel-title"></h4>
+    </div>
+
+    <div class="panel-body">
+        <table class="table table-striped">
+            <thead>
+                <tr class="row">
+                        <th class="col-md-2">Subject</th>
+                        <th class="col-md-2">Sender</th>
+                        <th class="col-md-1">Priority</th>
+                        <th class="col-md-4">Message</th>
+                        <th class="col-md-2">Time Sent</th>
+                        <th class="col-md-1">Delete</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for message in message_list|dictsort:"priority" %}
+                    <tr class="row">
+                        <td class="col-md-2"><a href="{% url 'message:detail' message.pk%}">{{ message.subject }}</a></td>
+                        <td class="col-md-2">{{ message.sender.get_full_name }}</td>
+                        <td class="col-md-1">{{ message.get_priority_display }}</td>
+                        <td class="col-md-4">{{ message.message|truncatechars:32 }}</td>
+                        <td class="col-md-2">{{ message.time }}</td>
+                        <td class="col-md-1"><a href="{% url 'message:remove' message.id %}">
+                            <span class="glyphicon glyphicon-trash"></span></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+{% endif %}
+</div>
+{% endblock %}

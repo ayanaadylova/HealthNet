@@ -1,0 +1,59 @@
+{% extends 'accounts/base.html' %}
+{% block title %} Update Appointment {% endblock %}
+{% block body %}
+
+<body>
+    <div class="center"><h3>Update Appointment(continue)</h3></div>
+    <div class="container-fluid">
+
+        <div class="row">
+
+            <div class="col-sm-12 col-md-5 center-block " style="float:none;">
+                <div class="panel panel panel-default">
+                    <div class="panel-body">
+                        {% if request.user.patient %}
+                            <div class="col-xs-12 text-center">
+                                Please choose the start time for a 30-minute appointment
+                            </div> <br> <br>
+                        {% endif %}
+                        {% if error_message %}
+                            <div class="col-sm-offset-4 col-sm-8">
+                                <p style="color:red"><strong>{{ error_message }}</strong></p>
+                            </div>
+                        {% endif %}
+                        <form class="form-horizontal" role="form" action="" method="post">
+                            {% csrf_token %}
+                            {% include 'accounts/form_template.html' %}
+                            <div class="form-group">
+                                <div class="col-md-6" style="text-align:left">
+                                    <a href="{% url 'appointment:updateevent' pk %}">
+                                        <button type="button" class="btn btn-primary">Go Back</button>
+                                    </a>
+                                </div>
+                                <div class="col-md-6" style="text-align:right">
+                                {% if request.user.patient %}
+                                    <a href="{% url 'patient:index' %}">
+                                {% elif request.user.doctor %}
+                                    <a href="{% url 'doctor:index' %}">
+                                {% elif request.user.nurse %}
+                                    <a href="{% url 'nurse:index' %}">
+                                {% elif request.user.h_admin %}
+                                    <a href="{% url 'h_admin:index' %}">
+                                {% endif %}
+                                        <button type="button" class="btn btn-danger">Cancel</button>
+                                </a>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</body>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'accounts/base.html'%}
+{% block title %}New Message{% endblock %}
+{% block body %}
+    <div class="center"><h3>Create a new message</h3></div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-12 col-md-7  center-block " style="float:none;">
+                <div class="panel panel panel-default">
+                    <div class="panel-body">
+                        {% if error_message %}
+                            <div class="col-sm-offset-4 col-sm-8">
+                                <p style="color:red"><strong>{{ error_message }}</strong></p>
+                            </div>
+                        {% endif %}
+                        <form id="searchform" role="search" method="get" action="{% url 'message:newmessage' %}">
+                            <div class="form-group">
+                                <div class="col-md-12" style="text-align:left">
+{#                                <div class="col-md-3"></div>#}
+{#                                <div class="col-md-6">#}
+                                    <input type="text" class="form-control" name="query" placeholder="Search for users">
+{#                                </div>#}
+{#                                <div class="col-md-1">#}<br>
+                                    <button type="submit" class="btn btn-primary">Search</button>
+{#                                </div>#}
+                                </div>
+                            </div>
+
+                        </form>
+                        <form class="form-horizontal" role="form" action="" method="post">
+                            {% csrf_token %}
+                            {% include 'accounts/form_template.html' %}
+                            <div class="form-group">
+                                <div class="col-md-6" style="text-align:left">
+                                    <a href="{% url 'message:inbox' %}">
+                                        <button type="button" class="btn btn-primary">Go Back</button>
+                                    </a>
+                                </div>
+                                <div class="col-md-6" style="text-align:right">
+                                    <a href="{% url 'message:inbox' %}">
+                                        <button type="button" class="btn btn-danger">Cancel</button>
+                                    </a>
+                                    <button type="submit" class="btn btn-success">Submit</button>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'accounts/base.html' %}
+{% block title %} Make Appointment {% endblock %}
+{% block body %}
+
+<div class="center"><h3>Create Appointment</h3></div>
+<div class="container-fluid">
+
+    <div class="row">
+
+        <div class="col-sm-12 col-md-6 center-block " style="float:none;">
+            <div class="panel panel panel-default">
+                <div class="panel-body">
+                    {% if error_message %}
+                        <div class="col-sm-offset-4 col-sm-8">
+                            <p style="color:red"><strong>{{ error_message }}</strong></p>
+                        </div>
+                    {% endif %}
+                    <form class="form-horizontal" role="form" action="" method="post">
+                        {% csrf_token %}
+                        {% include 'accounts/form_template.html' %}
+                        <div class="form-group">
+                            <div class="col-md-6" style="text-align:left">
+                                {% if request.user.nurse %}
+                                    <a href="{% url 'nurse:index' %}">
+                                        <button type="button" class="btn btn-primary">Go Back</button>
+                                    </a>
+                                {% elif request.user.h_admin %}
+                                    <a href="{% url 'h_admin:index' %}">
+                                        <button type="button" class="btn btn-primary">Go Back</button>
+                                    </a>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-md-6" style="text-align:right">
+                                {% if request.user.nurse %}
+                                    <a href="{% url 'nurse:index' %}">
+                                        <button type="button" class="btn btn-danger">Cancel</button>
+                                    </a>
+                                {% elif request.user.h_admin %}
+                                    <a href="{% url 'h_admin:index' %}">
+                                        <button type="button" class="btn btn-danger">Cancel</button>
+                                    </a>
+                                {% endif %}
+
+                                <button type="submit" class="btn btn-success">Continue</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

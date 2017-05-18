@@ -1,0 +1,132 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %} {{ event.name }} {% endblock %}
+
+{% block body %}
+    <div class="container">
+    {% if error_message %}
+        <p style="color:red"><strong>{{ error_message }}</strong></p>
+    {% endif %}
+    {% if request.user.patient%}
+        <h2> &nbsp; Your Appointment Information:</h2>
+    {% elif request.user.doctor %}
+        {% if event.patient.user.get_full_name != '' and event.patient %}
+            <h2> &nbsp; {{ event.patient.user.get_full_name }}'s Appointment Information:</h2>
+        {% else %}
+            <h2> &nbsp; Event Information:</h2>
+        {% endif %}
+    {% elif request.user.nurse or request.user.h_admin %}
+        <h2> &nbsp; {{ event.patient.user.get_full_name }}'s Appointment Information:</h2>
+    {% endif %}
+    <!-- Appointment Information -->
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <h4 class="panel-title">Appointment Information</h4>
+        </div>
+
+        <div class="panel-body">
+            <ul>
+                <li> Name: {{ event.name }}</li>
+                <li> Date: {{ event.date }}</li>
+                <li> Start time: {{ event.start_time }}</li>
+                <li> End time: {{ event.end_time }}</li>
+            </ul>
+    <div class="col-md-12" style="text-align:right">
+            {% if request.user.nurse.hospital == event.patient.hospital or request.user.h_admin.hospital == event.patient.hospital or request.user.doctor or request.user.patient == event.patient %}
+                {% if request.user.patient or request.user.doctor or request.user.h_admin %}
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#popUpWindow">Cancel Appointment</button>
+
+                <div class="modal fade" id="popUpWindow" style="text-align:left">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+
+                                <h3>Cancel Appointment</h3>
+                            </div>
+
+                            <div class="modal-body">
+                                Are you sure you want to cancel this appointment?
+                            </div>
+
+                            <div class="modal-footer">
+                                {% if request.user.patient%}
+                                    <a href="{% url 'patient:deleteevent' event.pk %}">
+                                {% elif request.user.doctor%}
+                                    <a href="{% url 'doctor:deleteevent' event.pk %}">
+                                {% elif request.user.h_admin %}
+                                    <a href="{% url 'h_admin:deleteevent' event.pk %}">
+                                {% endif %}
+                                <button type="submit" class="btn btn-danger">Cancel Appointment</button>
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Back</button>
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <a href="{% url 'appointment:updateevent' event.pk%}">
+                    <button type="submit" class="btn btn-success">Update Appointment</button>
+                </a>
+            {% endif %}
+    </div>
+        </div>
+
+    </div>
+
+
+
+{#    {% if request.user.nurse.hospital == event.patient.hospital or request.user.h_admin.hospital == event.patient.hospital or request.user.doctor or request.user.patient == event.patient %}#}
+{#    <!-- Cancel Appointment -->#}
+{#    <div class="container">#}
+{#        <a href="{% url 'appointment:updateevent' event.pk%}">#}
+{##}
+{#                    <div class="col-md-3 text-left">#}
+{#                        <button type="submit" class="btn btn-success">Update Appointment</button>#}
+{#                    </div>#}
+{##}
+{#        </a>#}
+{#        {% if request.user.patient or request.user.doctor or request.user.h_admin %}#}
+{#            <div class="col-md-3">#}
+{#                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#popUpWindow">Cancel Appointment</button>#}
+{#            </div>#}
+{##}
+{#        <div class="modal fade" id="popUpWindow">#}
+{#            <div class="modal-dialog">#}
+{#                <div class="modal-content">#}
+{##}
+{#                    <div class="modal-header">#}
+{##}
+{#                        <h3>Cancel Appointment</h3>#}
+{#                    </div>#}
+{##}
+{#                    <div class="modal-body">#}
+{#                        Are you sure you want to cancel this appointment?#}
+{#                    </div>#}
+{##}
+{#                    <div class="modal-footer">#}
+{#                        {% if request.user.patient%}#}
+{#                            <a href="{% url 'patient:deleteevent' event.pk %}">#}
+{#                        {% elif request.user.doctor%}#}
+{#                            <a href="{% url 'doctor:deleteevent' event.pk %}">#}
+{#                        {% elif request.user.h_admin %}#}
+{#                            <a href="{% url 'h_admin:deleteevent' event.pk %}">#}
+{#                        {% endif %}#}
+{#                        <button type="submit" class="btn btn-danger">Cancel Appointment</button>#}
+{#                        <button type="button" class="btn btn-primary" data-dismiss="modal">Back</button>#}
+{#                        </a>#}
+{#                    </div>#}
+{##}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#        {% endif %}#}
+{##}
+{#    </div>#}
+{#            {% endif %}#}
+    </div>
+
+{% endblock %}
