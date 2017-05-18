@@ -1,0 +1,48 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %} Profile {% endblock %}
+
+{% block body %}
+    {% if error_message %}
+        <p style="color:red"><strong>{{ error_message }}</strong></p>
+    {% endif %}
+
+    <!-- Personal Information -->
+<div class="container">
+    <div class="center"><h3>Your Profile</h3></div>
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <h4 class="panel-title">Personal Information</h4>
+        </div>
+
+        <div class="panel-body">
+            <ul>
+                <strong>First Name: </strong>{{ request.user.first_name }} <br>
+                <strong>Last Name: </strong>{{ request.user.last_name }} <br>
+                <strong>Email: </strong>{{ request.user.email }} <br>
+                <strong>Hospital: </strong>{{ request.user.nurse.hospital.name }} <br>
+                <strong>Doctors:</strong>
+                    <ul>
+                        {% for doctor in request.user.nurse.get_doctors %}
+                            {{ doctor }} <br>
+                        {% endfor %}
+                    </ul>
+
+            </ul>
+            <!-- Update Password -->
+            <div class="col-md-12" style="text-align:right">
+                <a href="{% url 'accounts:updatepassword'%}">
+                    <button type="submit" class="btn btn-primary">Update Password</button>
+                </a>
+            <!-- Update Profile Information -->
+                <a href="{% url 'nurse:update' request.user.pk %}">
+                    <button type="submit" class="btn btn-success">Update Profile</button>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+{% endblock %}

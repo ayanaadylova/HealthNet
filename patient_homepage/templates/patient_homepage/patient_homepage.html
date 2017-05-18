@@ -1,0 +1,468 @@
+{% extends 'accounts/base.html' %}
+{% block title %} Dashboard {% endblock %}
+{% block body %}
+
+<div class="container">
+    <h2>Hello, {{ request.user.first_name }}</h2>
+
+    <form action="{% url 'patient:index' %}" method="post">
+    {% csrf_token %}
+    <label for="calendar_view">Calendar view:</label>
+    <select name="calendar_view" id="calendar_view" >
+        <option value="">-----</option>
+        <option value="Monthly">Monthly</option>
+        <option value="Weekly">Weekly</option>
+        <option value="Daily">Daily</option>
+    </select>
+
+
+        <label for="dob_day">Day:</label>
+    <select name="dob_day" id="dob_day">
+        <option value="">Day</option>
+        <option value="">---</option>
+        <option value="01">01</option>
+        <option value="02">02</option>
+        <option value="03">03</option>
+        <option value="04">04</option>
+        <option value="05">05</option>
+        <option value="06">06</option>
+        <option value="07">07</option>
+        <option value="08">08</option>
+        <option value="09">09</option>
+        <option value="10">10</option>
+        <option value="11">11</option>
+        <option value="12">12</option>
+        <option value="13">13</option>
+        <option value="14">14</option>
+        <option value="15">15</option>
+        <option value="16">16</option>
+        <option value="17">17</option>
+        <option value="18">18</option>
+        <option value="19">19</option>
+        <option value="20">20</option>
+        <option value="21">21</option>
+        <option value="22">22</option>
+        <option value="23">23</option>
+        <option value="24">24</option>
+        <option value="25">25</option>
+        <option value="26">26</option>
+        <option value="27">27</option>
+        <option value="28">28</option>
+        <option value="29">29</option>
+        <option value="30">30</option>
+        <option value="31">31</option>
+    </select>
+
+        <label for="dob_month">Month:</label>
+    <select name="dob_month" id="dob_month">
+        <option value="">Month</option>
+        <option value="">-----</option>
+        <option value="01">January</option>
+        <option value="02">February</option>
+        <option value="03">March</option>
+        <option value="04">April</option>
+        <option value="05">May</option>
+        <option value="06">June</option>
+        <option value="07">July</option>
+        <option value="08">August</option>
+        <option value="09">September</option>
+        <option value="10">October</option>
+        <option value="11">November</option>
+        <option value="12">December</option>
+    </select>
+
+        <label for="dob_year">Year:</label>
+    <select name="dob_year" id="dob_year">
+        <option value="">Year</option>
+        <option value="">----</option>
+        <option value="2030">2030</option>
+        <option value="2029">2029</option>
+        <option value="2028">2028</option>
+        <option value="2027">2027</option>
+        <option value="2026">2026</option>
+        <option value="2025">2025</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+        <option value="2022">2022</option>
+        <option value="2021">2021</option>
+        <option value="2020">2020</option>
+        <option value="2019">2019</option>
+        <option value="2018">2018</option>
+        <option value="2017">2017</option>
+        <option value="2016">2016</option>
+        <option value="2015">2015</option>
+        <option value="2014">2014</option>
+        <option value="2013">2013</option>
+        <option value="2012">2012</option>
+        <option value="2011">2011</option>
+        <option value="2010">2010</option>
+        <option value="2009">2009</option>
+        <option value="2008">2008</option>
+        <option value="2007">2007</option>
+        <option value="2006">2006</option>
+        <option value="2005">2005</option>
+        <option value="2004">2004</option>
+        <option value="2003">2003</option>
+        <option value="2002">2002</option>
+        <option value="2001">2001</option>
+        <option value="2000">2000</option>
+        <option value="1999">1999</option>
+        <option value="1998">1998</option>
+        <option value="1997">1997</option>
+        <option value="1996">1996</option>
+        <option value="1995">1995</option>
+        <option value="1994">1994</option>
+        <option value="1993">1993</option>
+        <option value="1992">1992</option>
+        <option value="1991">1991</option>
+        <option value="1990">1990</option>
+    </select>
+
+        <input class="btn btn-success" type="submit" value="Update" />
+    </form>
+
+
+    {% if calendar_view == 'Monthly' or calendar_view == 'Weekly'%}
+        <table class="table table-bordered" style="background-color:whitesmoke">
+            <thead>
+                    {% if calendar_view == 'Monthly' %}
+                        <center><h1>Your Monthly Calendar</h1></center>
+                    {% elif calendar_view == 'Weekly' %}
+                        <center><h1>Your Weekly Calendar</h1></center>
+                    {% endif %}
+                    <div align="left"><h3 id="date"></h3></div>
+                    <script>
+                        y = {{ year }};
+                        m = {{ month }};
+                        var monthNames = ["January", "February", "March", "April", "May", "June",
+                            "July", "August", "September", "October", "November", "December"
+                        ];
+                        document.getElementById("date").innerHTML = monthNames[m-1] + " " + y;
+                    </script>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="col-md-1">Sunday</th>
+                    <th class="col-md-1">Monday</th>
+                    <th class="col-md-1">Tuesday</th>
+                    <th class="col-md-1">Wednesday</th>
+                    <th class="col-md-1">Thursday</th>
+                    <th class="col-md-1">Friday</th>
+                    <th class="col-md-1">Saturday</th>
+                </tr>
+                {% for week in events %}
+                <tr>
+                    {% for day, events in week %}
+                        <td>
+                        <form action="{% url 'patient:index' %}" method="post">
+                        {% csrf_token %}
+                            <input type="hidden" name="dob_month" value="{{ day.month }}">
+                            <input type="hidden" name="dob_year" value="{{ day.year }}">
+                            <input type="hidden" name="dob_day" value="{{ day.day }}">
+                            <input type="hidden" name="calendar_view" value="Daily">
+                            <button style="height:100%;width:100%" type="submit" class="btn-link text-left">
+                                    {{day|date:"j"}}
+                            </button>
+                        </form>
+                            {% for event in events %}
+                                <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}({{ event.start_time }}-{{ event.end_time }})</b></a></p>
+                            {% endfor %}
+                        </td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% elif calendar_view == 'Daily' %}
+        <table id=tbl class="table table-bordered" style="background-color:whitesmoke; width: 800px; margin: 0px auto; " >
+            <thead>
+                <center><h1>Daily Calendar</h1></center>
+                <center><h3>{{ date }}</h3></center>
+            </thead>
+            <tbody>
+            {% for week in events %}
+                {% for day, events in week %}
+{#                    <td>#}
+{#                        {% for event in events %}#}
+{#                            <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}({{ event.start_time }}-{{ event.end_time }})</b></a></p>#}
+{#                        {% endfor %}#}
+{#                    </td>#}
+                    <tr>
+                        <td width="30%">9:00 am - 9:30 am</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.0 and event.start_time < times.1 or event.end_time > times.0 and event.end_time <= times.1 or event.start_time < times.0 and event.end_time > times.1 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.0 and event.start_time < times.1 or event.end_time > times.0 and event.end_time <= times.1 or event.start_time < times.0 and event.end_time > times.1 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">9:30 am - 10:00 am</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.1 and event.start_time < times.2 or event.end_time > times.1 and event.end_time <= times.2 or event.start_time < times.1 and event.end_time > times.2 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.1 and event.start_time < times.2 or event.end_time > times.1 and event.end_time <= times.2 or event.start_time < times.1 and event.end_time > times.2 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">10:00 am - 10:30 am</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.2 and event.start_time < times.3 or event.end_time > times.2 and event.end_time <= times.3 or event.start_time < times.2 and event.end_time > times.3 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.2 and event.start_time < times.3 or event.end_time > times.2 and event.end_time <= times.3 or event.start_time < times.2 and event.end_time > times.3 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">10:30 am - 11:00 am</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.3 and event.start_time < times.4 or event.end_time > times.3 and event.end_time <= times.4 or event.start_time < times.3 and event.end_time > times.4 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.3 and event.start_time < times.4 or event.end_time > times.3 and event.end_time <= times.4 or event.start_time < times.3 and event.end_time > times.4 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">11:00 am - 11:30 am</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.4 and event.start_time < times.5 or event.end_time > times.4 and event.end_time <= times.5 or event.start_time < times.4 and event.end_time > times.5 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.4 and event.start_time < times.5 or event.end_time > times.4 and event.end_time <= times.5 or event.start_time < times.4 and event.end_time > times.5 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">11:30 am - 12:00 pm</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.5 and event.start_time < times.6 or event.end_time > times.5 and event.end_time <= times.6 or event.start_time < times.5 and event.end_time > times.6 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.5 and event.start_time < times.6 or event.end_time > times.5 and event.end_time <= times.6 or event.start_time < times.5 and event.end_time > times.6 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">12:00 pm - 12:30 pm</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.6 and event.start_time < times.7 or event.end_time > times.6 and event.end_time <= times.7 or event.start_time < times.6 and event.end_time > times.7 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.6 and event.start_time < times.7 or event.end_time > times.6 and event.end_time <= times.7 or event.start_time < times.6 and event.end_time > times.7 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">12:30 pm - 1:00 pm</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.7 and event.start_time < times.8 or event.end_time > times.7 and event.end_time <= times.8 or event.start_time < times.7 and event.end_time > times.8 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.7 and event.start_time < times.8 or event.end_time > times.7 and event.end_time <= times.8 or event.start_time < times.7 and event.end_time > times.8 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">1:00 pm - 1:30 pm</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.8 and event.start_time < times.9 or event.end_time > times.8 and event.end_time <= times.9 or event.start_time < times.8 and event.end_time > times.9 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.8 and event.start_time < times.9 or event.end_time > times.8 and event.end_time <= times.9 or event.start_time < times.8 and event.end_time > times.9 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">1:30 pm - 2:00 pm</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.9 and event.start_time < times.10 or event.end_time > times.9 and event.end_time <= times.10 or event.start_time < times.9 and event.end_time > times.10 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.9 and event.start_time < times.10 or event.end_time > times.9 and event.end_time <= times.10 or event.start_time < times.9 and event.end_time > times.10 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">2:00 pm - 2:30 pm</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.10 and event.start_time < times.11 or event.end_time > times.10 and event.end_time <= times.11 or event.start_time < times.10 and event.end_time > times.11 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.10 and event.start_time < times.11 or event.end_time > times.10 and event.end_time <= times.11 or event.start_time < times.10 and event.end_time > times.11 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">2:30 pm - 3:00 pm</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.11 and event.start_time < times.12 or event.end_time > times.11 and event.end_time <= times.12 or event.start_time < times.11 and event.end_time > times.12 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.11 and event.start_time < times.12 or event.end_time > times.11 and event.end_time <= times.12 or event.start_time < times.11 and event.end_time > times.12 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">3:00 pm - 3:30 pm</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.12 and event.start_time < times.13 or event.end_time > times.12 and event.end_time <= times.13 or event.start_time < times.12 and event.end_time > times.13 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.12 and event.start_time < times.13 or event.end_time > times.12 and event.end_time <= times.13 or event.start_time < times.12 and event.end_time > times.13 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">3:30 pm - 4:00 pm</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.13 and event.start_time < times.14 or event.end_time > times.13 and event.end_time <= times.14 or event.start_time < times.13 and event.end_time > times.14 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.13 and event.start_time < times.14 or event.end_time > times.13 and event.end_time <= times.14 or event.start_time < times.13 and event.end_time > times.14 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">4:00 pm - 4:30 pm</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.14 and event.start_time < times.15 or event.end_time > times.14 and event.end_time <= times.15 or event.start_time < times.14 and event.end_time > times.15 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.14 and event.start_time < times.15 or event.end_time > times.14 and event.end_time <= times.15 or event.start_time < times.14 and event.end_time > times.15 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="30%">4:30 pm - 5:00 pm</td>
+                        <td>
+                            {% for event in events %}
+                                {% if event.start_time >= times.15 and event.start_time < times.16 or event.end_time > times.15 and event.end_time <= times.16 or event.start_time < times.16 and event.end_time > times.16 %}
+                                    <p><a href="{% url 'appointment:eventdetail' event.pk %}"><b>{{event.name}}</b></a></p>
+                                {% endif %}
+                            {% endfor %}
+                            {% for event in doctor_events %}
+                                {% if event.start_time >= times.15 and event.start_time < times.16 or event.end_time > times.15 and event.end_time <= times.16 or event.start_time < times.16 and event.end_time > times.16 %}
+                                    Your doctor has an appointment during this shift
+                                {% endif %}
+                            {% endfor %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+</div>
+
+
+{% if request.user.patient.no_basic_info %}
+    <div class="center">
+    <h3>You need to add some basic information before you can make an appointment.</h3>
+    <a href="{% url 'patient:extra' %}" class="btn btn-default">Enter Info</a>
+    </div>
+{% else %}
+    <div class="center">
+    <a href="{% url 'appointment:makeappointmentdate' %}" class="btn btn-default">Make Appointment</a>
+    </div>
+{% endif %}
+
+
+
+<script>
+    var rows = document.getElementById('tbl').rows;
+    for (var i=0; i<rows.length; i++) {
+       var txt = rows[i].cells[1].textContent || rows[i].cells[1].innerText;
+       if (txt.trim()=="Your doctor has an appointment during this shift") {
+           rows[i].cells[1].style.backgroundColor = "silver";
+           rows[i].cells[1].innerHTML = ""
+       }
+    }
+
+</script>
+
+
+
+{% endblock %}
+
+
+

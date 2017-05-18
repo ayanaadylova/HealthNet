@@ -1,0 +1,174 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %}Electronic Medical Record{% endblock %}
+
+{% block body %}
+
+    <div class="center"><h3>{{ patient.user.get_full_name }}'s Electronic Medical Record</h3></div>
+    <div class="container" align="right">
+        {% if request.user.doctor %}
+            <a href="{% url 'doctor:patientemr' patient.pk %}">
+        {% elif request.user.h_admin %}
+            <a href="{% url 'h_admin:patientemr' patient.pk %}">
+        {% elif request.user.nurse %}
+            <a href="{% url 'nurse:patientemr' patient.pk %}">
+        {% endif %}
+            <button id="sortButton" type="button" class="btn btn-primary">Sorted View</button>
+        </a>
+        <a onclick="javascript:window.print()">
+            <button id="print" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button>
+        </a>
+    </div>
+    <!-- Medical Information -->
+<div class="container">
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <h4 class="panel-title">Medical Information</h4>
+        </div>
+
+        <div class="panel-body">
+            <a href="{% url 'accounts:updatemedicalinfo' patient.pk %}">
+                <button id="updateButton" type="submit" class="btn btn-success">Update Medical Information</button>
+            </a>
+            <ul>
+
+                <li> Height:
+                    {% if patient.height %}
+                        <var id="feet" style="font-style: normal"></var>ft <var id="inches" style="font-style: normal"></var>in</li>
+                    {% endif %}
+                    <script>
+                        h = {{ patient.height }};
+                        f = Math.trunc(h/12);
+                        i = h % 12;
+                        document.getElementById("inches").innerHTML = i.toString();
+                        document.getElementById("feet").innerHTML = f.toString();
+                    </script>
+                <li> Weight:
+                    {% if patient.weight %}
+                        {{ patient.weight }}</li>
+                    {% endif %}
+                <li> Blood Type: {{ patient.blood_type }}</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+    <!-- EMR -->
+    {% if log_list.size == 0%}
+        <div class="center"><h3>You have no medical records</h3></div>
+    {% endif %}
+    {% for log in log_list %}
+    {% if log.presclog or log.admissionlog or log.type == "discharge" or log.testresultlog %}
+    <div class="container">
+        <div class="panel panel-primary">
+
+            <div class="panel-heading">
+            {% if log.presclog %}
+                <h3 class="panel-title">Prescription</h3>
+            {% elif log.admissionlog %}
+                <h3 class="panel-title">Admission</h3>
+            {% elif log.type == "discharge" %}
+                <h3 class="panel-title">Discharge</h3>
+            {% elif log.testresultlog %}
+                <h3 class="panel-title">Test Result</h3>
+            {% endif %}
+
+            </div>
+
+            <div class="panel-body">
+                {% if log.presclog %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-2">Drug Name</th>
+                                    <th class="col-md-2">Start Date</th>
+                                    <th class="col-md-2">End Date</th>
+                                    <th class="col-md-2">Number of refills</th>
+                                    <th class="col-md-2">Dosage</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ log.presclog.drugname|truncatechars:32 }}</td>
+                                    <td>{{ log.presclog.start_date }}</td>
+                                    <td>{{ log.presclog.end_date }}</td>
+                                    <td>{{ log.presclog.refills }}</td>
+                                    <td>{{ log.presclog.dosage }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% elif log.admissionlog %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-2">Hospital</th>
+                                    <th class="col-md-2">Time</th>
+                                    <th class="col-md-2">Reason</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ log.hospital.name }}</td>
+                                    <td>{{ log.date_time }}</td>
+                                    <td>{{ log.admissionlog.reason }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% elif log.type == "discharge" %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-2">Hospital</th>
+                                    <th class="col-md-2">Time</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ log.hospital.name }}</td>
+                                    <td>{{ log.date_time }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% elif log.testresultlog %}
+                    {% if log.testresultlog.is_released %}
+                        <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-2">Name</th>
+                                    <th class="col-md-2">Date</th>
+                                    <th class="col-md-2">Information</th>
+                                    <th class="col-md-2">File</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ log.testresultlog.name }}</td>
+                                    <td>{{ log.testresultlog.date }}</td>
+                                    <td>{{ log.testresultlog.information }}</td>
+                                    <td>{% if log.testresultlog.file %}
+                                        <a href="{% url 'test_result:logfile' log.pk %}">View Attached File</a>
+                                        {% endif %}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+{% endblock %}

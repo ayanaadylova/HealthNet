@@ -1,0 +1,170 @@
+{% extends 'accounts/base.html' %}
+
+{% block title %} Electronic Medical Record {% endblock %}
+
+{% block body %}
+<div class="center"><h3>{{ request.user.get_full_name }}'s Electronic Medical Record</h3></div>
+
+<div class="container" align="right">
+    <a href="{% url 'patient:chronemr' %}">
+        <button id="chronButton" class="btn btn-primary">Chronological View</button>
+    </a>
+    <a onclick="javascript:window.print()">
+        <button id="print" type="button" class="btn btn-primary"><span class="glyphicon glyphicon-print" aria-hidden="true"></span></button>
+    </a>
+</div>
+<!-- Medical Information -->
+<div class="container">
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <h4 class="panel-title">Medical Information</h4>
+        </div>
+
+        <div class="panel-body">
+            <ul>
+                <li> Height:
+                    {% if request.user.patient.height %}
+                        <var id="feet" style="font-style: normal"></var>ft <var id="inches" style="font-style: normal"></var>in</li>
+                    {% endif %}
+                    <script>
+                        h = {{ request.user.patient.height }};
+                        f = Math.trunc(h/12);
+                        i = h % 12;
+                        document.getElementById("inches").innerHTML = i.toString();
+                        document.getElementById("feet").innerHTML = f.toString();
+                    </script>
+                <li> Weight:
+                    {% if request.user.patient.weight %}
+                        {{ request.user.patient.weight }}</li>
+                    {% endif %}
+                <li> Blood Type: {{ request.user.patient.blood_type }}</li>
+            </ul>
+        </div>
+
+    </div>
+</div>
+
+    <!-- Prescriptions -->
+<div class="container">
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <h4 class="panel-title">Prescriptions</h4>
+        </div>
+
+        <div class="panel-body">
+            <div class="table-responsive">
+            {% if request.user.patient.prescription_set.all.count == 0 %}
+                <div class="center"><h3>You have no prescriptions</h3></div>
+            {% else %}
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-md-1">Drug Name</th>
+                            <th class="col-md-3">Details</th>
+                            <th class="col-md-1">Start Date</th>
+                            <th class="col-md-1">End Date</th>
+                            <th class="col-md-1">Number of refills</th>
+                            <th class="col-md-1">Dosage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prescription in request.user.patient.prescription_set.all|dictsortreversed:"start_date" %}
+                            <tr>
+                                <td>{{ prescription.name }}</td>
+                                <td>{{ prescription.information }}</td>
+                                <td>{{ prescription.start_date }}</td>
+                                <td>{{ prescription.end_date }}</td>
+                                <td>{{ prescription.refills }}</td>
+                                <td>{{ prescription.dosage }}{{ prescription.unit }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <!-- Test Results -->
+<div class="container">
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <h4 class="panel-title">Test Results</h4>
+        </div>
+
+        <div class="panel-body">
+            {% if request.user.patient.get_unapproved_tests_number == 0 %}
+                <div class="center"> <h3>You have no test results</h3></div>
+            {% else %}
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th class="col-md-1">Name</th>
+                            <th class="col-md-2">Information</th>
+                            <th class="col-md-1">Date</th>
+                            <th class="col-md-1">File</th>
+                        </tr>
+                    </thead>
+                    <tr>
+                        {% for testresult in request.user.patient.testresult_set.all|dictsortreversed:"date" %}
+                            {% if testresult.is_released %}
+                                <tr>
+                                    <td>{{ testresult.name }}</td>
+                                    <td>{{ testresult.information }}</td>
+                                    <td>{{ testresult.date }}</td>
+                                    <td>{% if testresult.file %}
+                                        <a href="{% url 'test_result:file' testresult.pk %}"> View Attached File </a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                </table>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+<!-- Hospital Stays -->
+<div class="container">
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <h4 class="panel-title">Previous Hospital Stays</h4>
+        </div>
+
+        <div class="panel-body">
+            {% if request.user.patient.hospitalstay_set.all.count == 0 %}
+                <div class="center"><h3>You have no hospital stays</h3></div>
+            {% else %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Hospital</th>
+                        <th>Date</th>
+                        <th>Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for stay in request.user.patient.hospitalstay_set.all %}
+                        <tr>
+                            <td>{{ stay.hospital.name }}</td>
+                            <td>{{ stay.admission_date }} - {% if stay.discharge_date %}{{ stay.discharge_date }}{%else%}Now{%endif%}</td>
+                            <td>{{ stay.reason }}: {{ stay.admission_details }}<br>{{ stay.discharge_details }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends 'accounts/base.html' %}
+{% block title %}Log{% endblock %}
+
+
+{% block body %}
+<center><h2>System Logs/Statistics</h2></center>
+
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">Prescription Trends</h4>
+        </div>
+
+        <div class="panel-body">
+            {% for drug, number in drugs.items %}
+            <p><b>{{ drug }}:</b> {{ number }}%</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">Admission Reasons by Percentage</h4>
+        </div>
+
+        <div class="panel-body">
+            {% for key, value in reason_percentages.items %}
+                <p><b>{{ key }}:</b> {{ value }}%</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h4 class="panel-title">Admission Times by Percentage</h4>
+        </div>
+
+        <div class="panel-body">
+            {% for key, value in stay_percentages.items %}
+                <p><b>{{ key }}:</b> {{ value }}%</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="panel panel-primary">
+
+        <div class="panel-heading">
+            <h4 class="panel-title">Log</h4>
+        </div>
+
+
+
+        <div class="panel-body">
+            <div class="panel-group" id="accordion">
+                {% for log in log_list %}
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            {% if log.presclog %}
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}">{{ log.date_time }}
+                                Prescription Log</a>
+                            {% elif log.eventlog %}
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}">{{ log.date_time }}
+                                Event Log</a>
+                            {% elif log.transferlog %}
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}">{{ log.date_time }}
+                                Transfer Log</a>
+                            {% elif log.testlog %}
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}">{{ log.date_time }}
+                                Test Log</a>
+                            {% else %}
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse{{ forloop.counter }}">{{ log.date_time }}
+                                User Log</a>
+                                {% endif %}
+                        </h4>
+                    </div>
+                    <div id="collapse{{ forloop.counter }}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            {{ log.description }}
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+{% endblock %}
