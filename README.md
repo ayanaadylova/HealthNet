@@ -44,7 +44,7 @@ second page of registration.
 
 
 ---Login Information for Intial Users---
-# 's vary depending on user type. They are all numbered 1-x.
+ #'s vary depending on user type. They are all numbered 1-x.
 All the passwords are pass1234
 	Hospital Admins:	hadmin#@gmail.com
 		Doctors:	doctor#@gmail.com
